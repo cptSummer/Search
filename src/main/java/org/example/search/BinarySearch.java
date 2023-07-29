@@ -10,13 +10,13 @@ public class BinarySearch implements Search {
     private final UserService userServiceImp = new UserServiceImp();
 
     @Override
-    public void run() {
+    public void run() { // run method from Search interface
         System.out.println("B I N A R Y   S E A R C H");
         init();
         System.out.println("Exiting...");
     }
 
-    private void init() {
+    private void init() { // init method
         boolean exit = false;
         while (!exit) {
             System.out.println("\nOptions \n1. Search surname 2. Exit\n");
@@ -24,7 +24,7 @@ public class BinarySearch implements Search {
             try {
                 int caseNum = scanner.nextInt();
                 scanner.nextLine();
-                exit= handleOption(caseNum);
+                exit = handleOption(caseNum);
             } catch (Exception e) {
                 System.out.println("Wrong option");
                 scanner.nextLine();
@@ -33,7 +33,7 @@ public class BinarySearch implements Search {
     }
 
     private boolean handleOption(int option) {
-        switch (option) {
+        switch (option) { // option must be 1 or 2
             case 1 -> searchSurname();
             case 2 -> {
                 return true;
@@ -51,7 +51,9 @@ public class BinarySearch implements Search {
         String surname = scanner.next();
         System.out.println("Enter number of users: ");
         int arrSize = checkPositive(scanner.nextInt());
-        int count = userServiceImp.iterationCount(userServiceImp.createUsers(arrSize, name, surname), surname);
+        System.out.println("Enter phone number: ");
+        String phone = checkPhone(scanner.next());
+        int count = userServiceImp.iterationCount(userServiceImp.createUsers(arrSize, name, surname, phone), surname);
         if (count != -1) {
             System.out.println("Searching surname: " + surname +
                     "\nIteration count for finding user: " + count);
@@ -60,8 +62,16 @@ public class BinarySearch implements Search {
         }
     }
 
+    private String checkPhone(String phone) {
+        while (!phone.matches("[0-9]+")) { // phone must contain only numbers
+            System.out.println("Please enter a valid phone number");
+            phone = scanner.next();
+        }
+        return phone;
+    }
+
     private int checkPositive(int checkNum) {
-        while (checkNum <= 0) {
+        while (checkNum <= 0) { // checkNum must be positive
             System.out.println("Please enter a positive number");
             checkNum = scanner.nextInt();
         }
